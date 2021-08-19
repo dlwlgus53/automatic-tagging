@@ -41,8 +41,8 @@ def find_nearest_leamma_vp(index, parsed_text):
             lem = pos(parsed_text[index-1][1])
             if len(lem)>0:
                 for L in lem:
-                    if L[1] == 'V': # verb
-                        return lem[0]
+                    if L[1][0] == 'V': # verb
+                        return L[0]
                 return parsed_text[index-1][1] # lemmanize fail
             else:
                 return parsed_text[index-1][1] # lemmanize fail
@@ -122,15 +122,16 @@ if __name__ == "__main__":
     
     klue.to_json(f'../log/{now}user_action.json')
 
+
+    log_dict = {}
+    for name in CR.clusters.keys():
+        log_dict[name] = CR.clusters[name].entity
+
+    with open(f'../log/{now}before.json', 'w') as fp:
+        json.dump(log_dict, fp, indent=4,ensure_ascii=False)
+
     ## MERGE!
     # slot_nums = args.slot_num # optional\    
-    # log_dict = {}
-    # for name in CR.clusters.keys():
-    #     log_dict[name] = CR.clusters[name].entity
-
-    # with open(f'../log/{now}before.json', 'w') as fp:
-    #     json.dump(log_dict, fp, indent=4,ensure_ascii=False)
-
     # print(f'Cluster numbers : {len(CR.clusters.keys())}')
     # while len(CR.clusters.keys()) > slot_nums:
     #     max_similar_score = 0
